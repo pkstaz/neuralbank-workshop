@@ -5,22 +5,34 @@ import { CustomerCard } from "@/components/CustomerCard";
 import { API_BASE_URL } from "@/constants/api";
 import { Loader2, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const CustomerList = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCustomers = async () => {
+      setIsLoading(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/api/v1/customers?page=0&size=20`);
+        const response = await fetch(`${API_BASE_URL}/api/v1/customers?page=${currentPage}&size=20`);
         if (!response.ok) {
           throw new Error("Failed to fetch customers");
         }
         const data = await response.json();
         setCustomers(data.content || data);
+        setTotalPages(data.totalPages || 1);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
@@ -30,7 +42,7 @@ const CustomerList = () => {
     };
 
     fetchCustomers();
-  }, []);
+  }, [currentPage]);
 
   const handleCustomerClick = (identification: string) => {
     navigate(`/customer/${identification}`);
@@ -75,15 +87,64 @@ const CustomerList = () => {
           )}
 
           {!isLoading && !error && customers.length > 0 && (
-            <div className="grid gap-4 md:grid-cols-2">
-              {customers.map((customer) => (
-                <CustomerCard
-                  key={customer.identificacion}
-                  customer={customer}
-                  onClick={() => handleCustomerClick(customer.identificacion)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid gap-4 md:grid-cols-2">
+                {customers.map((customer) => (
+                  <CustomerCard
+                    key={customer.identificacion}
+                    customer={customer}
+                    onClick={() => handleCustomerClick(customer.identificacion)}
+                  />
+                ))}
+              </div>
+              
+              {totalPages > 1 && (
+                <div className="mt-8">
+                  <Pagination>
+                    <PaginationContent>
+                      <PaginationItem>
+                        <PaginationPrevious
+                          onClick={() => setCurrentPage(prev => Math.max(0, prev - 1))}
+                          className={currentPage === 0 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                      
+                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                        let pageNum;
+                        if (totalPages <= 5) {
+                          pageNum = i;
+                        } else if (currentPage < 3) {
+                          pageNum = i;
+                        } else if (currentPage > totalPages - 3) {
+                          pageNum = totalPages - 5 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+                        
+                        return (
+                          <PaginationItem key={pageNum}>
+                            <PaginationLink
+                              onClick={() => setCurrentPage(pageNum)}
+                              isActive={currentPage === pageNum}
+                              className="cursor-pointer"
+                            >
+                              {pageNum + 1}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      })}
+                      
+                      <PaginationItem>
+                        <PaginationNext
+                          onClick={() => setCurrentPage(prev => Math.min(totalPages - 1, prev + 1))}
+                          className={currentPage >= totalPages - 1 ? "pointer-events-none opacity-50" : "cursor-pointer"}
+                        />
+                      </PaginationItem>
+                    </PaginationContent>
+                  </Pagination>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

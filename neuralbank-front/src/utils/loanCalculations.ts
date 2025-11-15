@@ -4,6 +4,14 @@ export const calculateLoanDecision = (
   customer: Customer,
   application: LoanApplication
 ): LoanDecision => {
+  // Rule 0: High Risk Level - immediate rejection
+  if (customer.nivelRiesgo.toLowerCase() === "alto") {
+    return {
+      approved: false,
+      reason: `Your Risk Level is High. Loans cannot be approved for high-risk customers regardless of other conditions.`,
+    };
+  }
+
   const monthlyInstallment = application.loanAmount / application.installments;
   const debtToIncomeRatio = monthlyInstallment / application.monthlyIncome;
 
