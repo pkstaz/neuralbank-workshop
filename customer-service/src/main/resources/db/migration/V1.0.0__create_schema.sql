@@ -12,8 +12,7 @@
 -- ============================================
 -- EXTENSIONES
 -- ============================================
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+${create_extensions}
 
 -- ============================================
 -- SCHEMAS
@@ -161,7 +160,7 @@ CREATE TABLE core.cliente (
     tipo_identificacion VARCHAR(20),
     nombre VARCHAR(150) NOT NULL,
     apellido VARCHAR(150),
-    nombre_completo VARCHAR(300) GENERATED ALWAYS AS (nombre || ' ' || COALESCE(apellido, '')) STORED,
+    nombre_completo VARCHAR(300) ${generated_always_as} (nombre || ' ' || COALESCE(apellido, '')) ${generated_stored},
     fecha_nacimiento DATE,
     email VARCHAR(150) UNIQUE,
     telefono VARCHAR(20),
@@ -253,7 +252,7 @@ CREATE TABLE core.credito (
     monto_solicitado NUMERIC(18,2) NOT NULL CHECK (monto_solicitado > 0),
     monto_aprobado NUMERIC(18,2) CHECK (monto_aprobado > 0),
     tasa_interes_anual NUMERIC(5,2) NOT NULL CHECK (tasa_interes_anual >= 0),
-    tasa_interes_mensual NUMERIC(5,4) GENERATED ALWAYS AS (tasa_interes_anual / 12) STORED,
+    tasa_interes_mensual NUMERIC(5,4) ${generated_always_as} (tasa_interes_anual / 12) ${generated_stored},
     plazo_meses INTEGER NOT NULL CHECK (plazo_meses > 0),
     fecha_solicitud DATE NOT NULL,
     fecha_aprobacion DATE,
@@ -357,7 +356,7 @@ CREATE TABLE core.transaccion (
     cuenta_origen_id BIGINT,
     cuenta_destino_id BIGINT,
     numero_transaccion VARCHAR(50) UNIQUE NOT NULL,
-    uuid_transaccion UUID DEFAULT uuid_generate_v4(),
+    uuid_transaccion UUID DEFAULT ${uuid_function},
     tipo_transaccion core.tipo_transaccion_enum NOT NULL,
     canal core.canal_enum NOT NULL,
     monto NUMERIC(18,2) NOT NULL CHECK (monto > 0),
@@ -451,6 +450,8 @@ END;
 -- ============================================
 -- FUNCIONES Y TRIGGERS
 -- ============================================
+
+${procedure_start}
 
 -- Función para actualizar updated_at
 CREATE OR REPLACE FUNCTION core.update_updated_at_column()
@@ -618,3 +619,5 @@ BEGIN
     RAISE NOTICE 'IDs: BIGSERIAL para mejor escalabilidad';
     RAISE NOTICE '==============================================';
 END $$;
+
+${procedure_end}

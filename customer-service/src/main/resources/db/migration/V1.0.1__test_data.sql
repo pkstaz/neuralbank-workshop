@@ -389,6 +389,8 @@ INSERT INTO core.detalle_transaccion (transaccion_id, concepto, monto, tipo_carg
 -- PROCEDIMIENTOS ALMACENADOS ÚTILES
 -- ============================================
 
+${procedure_start}
+
 -- Función para generar cuotas de un crédito
 CREATE OR REPLACE FUNCTION core.generar_cuotas_credito(p_credito_id INTEGER)
 RETURNS TABLE(cuota_generada INTEGER) AS $$
@@ -546,3 +548,5 @@ BEGIN
     RAISE NOTICE 'Argentina, Chile, España, Reino Unido';
     RAISE NOTICE '==============================================';
 END $$;
+
+${procedure_end}
