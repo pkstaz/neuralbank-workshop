@@ -14,37 +14,43 @@ SET client_encoding = 'UTF8';
 -- ============================================
 
 -- Insertar Países
-INSERT INTO core.pais (codigo_iso2, codigo_iso3, nombre, codigo_telefono, moneda_codigo, moneda_nombre, activo) VALUES
-('US', 'USA', 'Estados Unidos', '+1', 'USD', 'Dólar estadounidense', TRUE),
-('MX', 'MEX', 'México', '+52', 'MXN', 'Peso mexicano', TRUE),
-('BR', 'BRA', 'Brasil', '+55', 'BRL', 'Real brasileño', TRUE),
-('AR', 'ARG', 'Argentina', '+54', 'ARS', 'Peso argentino', TRUE),
-('CL', 'CHL', 'Chile', '+56', 'CLP', 'Peso chileno', TRUE),
-('CO', 'COL', 'Colombia', '+57', 'COP', 'Peso colombiano', TRUE),
-('PE', 'PER', 'Perú', '+51', 'PEN', 'Sol peruano', TRUE),
-('ES', 'ESP', 'España', '+34', 'EUR', 'Euro', TRUE),
-('GB', 'GBR', 'Reino Unido', '+44', 'GBP', 'Libra esterlina', TRUE),
-('DE', 'DEU', 'Alemania', '+49', 'EUR', 'Euro', TRUE),
-('FR', 'FRA', 'Francia', '+33', 'EUR', 'Euro', TRUE),
-('IT', 'ITA', 'Italia', '+39', 'EUR', 'Euro', TRUE),
-('CA', 'CAN', 'Canadá', '+1', 'CAD', 'Dólar canadiense', TRUE),
-('JP', 'JPN', 'Japón', '+81', 'JPY', 'Yen japonés', TRUE),
-('CN', 'CHN', 'China', '+86', 'CNY', 'Yuan chino', TRUE);
+INSERT INTO core.pais (pais_id, codigo_iso2, codigo_iso3, nombre, codigo_telefono, moneda_codigo, moneda_nombre, activo) VALUES
+(1, 'US', 'USA', 'Estados Unidos', '+1', 'USD', 'Dólar estadounidense', TRUE),
+(2, 'MX', 'MEX', 'México', '+52', 'MXN', 'Peso mexicano', TRUE),
+(3, 'BR', 'BRA', 'Brasil', '+55', 'BRL', 'Real brasileño', TRUE),
+(4, 'AR', 'ARG', 'Argentina', '+54', 'ARS', 'Peso argentino', TRUE),
+(5, 'CL', 'CHL', 'Chile', '+56', 'CLP', 'Peso chileno', TRUE),
+(6, 'CO', 'COL', 'Colombia', '+57', 'COP', 'Peso colombiano', TRUE),
+(7, 'PE', 'PER', 'Perú', '+51', 'PEN', 'Sol peruano', TRUE),
+(8, 'ES', 'ESP', 'España', '+34', 'EUR', 'Euro', TRUE),
+(9, 'GB', 'GBR', 'Reino Unido', '+44', 'GBP', 'Libra esterlina', TRUE),
+(10, 'DE', 'DEU', 'Alemania', '+49', 'EUR', 'Euro', TRUE),
+(11, 'FR', 'FRA', 'Francia', '+33', 'EUR', 'Euro', TRUE),
+(12, 'IT', 'ITA', 'Italia', '+39', 'EUR', 'Euro', TRUE),
+(13, 'CA', 'CAN', 'Canadá', '+1', 'CAD', 'Dólar canadiense', TRUE),
+(14, 'JP', 'JPN', 'Japón', '+81', 'JPY', 'Yen japonés', TRUE),
+(15, 'CN', 'CHN', 'China', '+86', 'CNY', 'Yuan chino', TRUE);
+
+-- Ajustar la secuencia de país para que el próximo insert sea 16
+ALTER SEQUENCE core.pais_pais_id_seq RESTART WITH 16;
 
 -- Insertar Monedas
-INSERT INTO core.moneda (codigo, nombre, simbolo, decimales, activo) VALUES
-('USD', 'Dólar estadounidense', '$', 2, TRUE),
-('EUR', 'Euro', '€', 2, TRUE),
-('GBP', 'Libra esterlina', '£', 2, TRUE),
-('JPY', 'Yen japonés', '¥', 0, TRUE),
-('CAD', 'Dólar canadiense', 'C$', 2, TRUE),
-('MXN', 'Peso mexicano', 'MX$', 2, TRUE),
-('BRL', 'Real brasileño', 'R$', 2, TRUE),
-('ARS', 'Peso argentino', 'AR$', 2, TRUE),
-('CLP', 'Peso chileno', 'CL$', 0, TRUE),
-('COP', 'Peso colombiano', 'CO$', 0, TRUE),
-('PEN', 'Sol peruano', 'S/', 2, TRUE),
-('CNY', 'Yuan chino', '¥', 2, TRUE);
+INSERT INTO core.moneda (moneda_id, codigo, nombre, simbolo, decimales, activo) VALUES
+(1, 'USD', 'Dólar estadounidense', '$', 2, TRUE),
+(2, 'EUR', 'Euro', '€', 2, TRUE),
+(3, 'GBP', 'Libra esterlina', '£', 2, TRUE),
+(4, 'JPY', 'Yen japonés', '¥', 0, TRUE),
+(5, 'CAD', 'Dólar canadiense', 'C$', 2, TRUE),
+(6, 'MXN', 'Peso mexicano', 'MX$', 2, TRUE),
+(7, 'BRL', 'Real brasileño', 'R$', 2, TRUE),
+(8, 'ARS', 'Peso argentino', 'AR$', 2, TRUE),
+(9, 'CLP', 'Peso chileno', 'CL$', 0, TRUE),
+(10, 'COP', 'Peso colombiano', 'CO$', 0, TRUE),
+(11, 'PEN', 'Sol peruano', 'S/', 2, TRUE),
+(12, 'CNY', 'Yuan chino', '¥', 2, TRUE);
+
+-- Ajustar la secuencia de moneda para que el próximo insert sea 13
+ALTER SEQUENCE core.moneda_moneda_id_seq RESTART WITH 13;
 
 -- Insertar Tasas de Cambio (ejemplos con fecha actual)
 INSERT INTO core.tasa_cambio (moneda_origen_id, moneda_destino_id, tasa, fecha_vigencia) VALUES
@@ -67,28 +73,31 @@ INSERT INTO core.tasa_cambio (moneda_origen_id, moneda_destino_id, tasa, fecha_v
 (3, 1, 1.27, CURRENT_TIMESTAMP), -- GBP a USD
 (3, 2, 1.16, CURRENT_TIMESTAMP); -- GBP a EUR
 
--- Insertar Sucursales (distribución internacional)
-INSERT INTO core.sucursal (codigo_sucursal, nombre, direccion, ciudad, estado_provincia, codigo_postal, pais_id, telefono, email, horario, latitud, longitud, activo) VALUES
+-- Insertar Sucursales (Con IDs explícitos)
+INSERT INTO core.sucursal (sucursal_id, codigo_sucursal, nombre, direccion, ciudad, estado_provincia, codigo_postal, pais_id, telefono, email, horario, latitud, longitud, activo) VALUES
 -- Estados Unidos
-('US-NY-001', 'NeuralBank Manhattan Branch', '350 Fifth Avenue', 'New York', 'New York', '10118', 1, '+1-212-555-0100', 'manhattan@neuralbank.com', 'Mon-Fri 9:00-17:00', 40.748817, -73.985428, TRUE),
-('US-LA-001', 'NeuralBank Los Angeles Branch', '633 West 5th Street', 'Los Angeles', 'California', '90071', 1, '+1-213-555-0200', 'losangeles@neuralbank.com', 'Mon-Fri 9:00-17:00', 34.052235, -118.243683, TRUE),
-('US-MI-001', 'NeuralBank Miami Branch', '1450 Brickell Avenue', 'Miami', 'Florida', '33131', 1, '+1-305-555-0300', 'miami@neuralbank.com', 'Mon-Fri 9:00-17:00', 25.761681, -80.191788, TRUE),
+(1, 'US-NY-001', 'NeuralBank Manhattan Branch', '350 Fifth Avenue', 'New York', 'New York', '10118', 1, '+1-212-555-0100', 'manhattan@neuralbank.com', 'Mon-Fri 9:00-17:00', 40.748817, -73.985428, TRUE),
+(2, 'US-LA-001', 'NeuralBank Los Angeles Branch', '633 West 5th Street', 'Los Angeles', 'California', '90071', 1, '+1-213-555-0200', 'losangeles@neuralbank.com', 'Mon-Fri 9:00-17:00', 34.052235, -118.243683, TRUE),
+(3, 'US-MI-001', 'NeuralBank Miami Branch', '1450 Brickell Avenue', 'Miami', 'Florida', '33131', 1, '+1-305-555-0300', 'miami@neuralbank.com', 'Mon-Fri 9:00-17:00', 25.761681, -80.191788, TRUE),
 -- México
-('MX-CD-001', 'NeuralBank Ciudad de México', 'Av. Paseo de la Reforma 505', 'Ciudad de México', 'CDMX', '06500', 2, '+52-55-5555-0100', 'cdmx@neuralbank.com', 'Lun-Vie 9:00-17:00', 19.432608, -99.133209, TRUE),
-('MX-GD-001', 'NeuralBank Guadalajara', 'Av. Americas 1500', 'Guadalajara', 'Jalisco', '44630', 2, '+52-33-5555-0200', 'guadalajara@neuralbank.com', 'Lun-Vie 9:00-17:00', 20.676682, -103.347654, TRUE),
+(4, 'MX-CD-001', 'NeuralBank Ciudad de México', 'Av. Paseo de la Reforma 505', 'Ciudad de México', 'CDMX', '06500', 2, '+52-55-5555-0100', 'cdmx@neuralbank.com', 'Lun-Vie 9:00-17:00', 19.432608, -99.133209, TRUE),
+(5, 'MX-GD-001', 'NeuralBank Guadalajara', 'Av. Americas 1500', 'Guadalajara', 'Jalisco', '44630', 2, '+52-33-5555-0200', 'guadalajara@neuralbank.com', 'Lun-Vie 9:00-17:00', 20.676682, -103.347654, TRUE),
 -- Brasil
-('BR-SP-001', 'NeuralBank São Paulo', 'Av. Paulista 1578', 'São Paulo', 'São Paulo', '01310-200', 3, '+55-11-5555-0100', 'saopaulo@neuralbank.com', 'Seg-Sex 10:00-16:00', -23.561414, -46.656350, TRUE),
-('BR-RJ-001', 'NeuralBank Rio de Janeiro', 'Av. Rio Branco 156', 'Rio de Janeiro', 'Rio de Janeiro', '20040-003', 3, '+55-21-5555-0200', 'rio@neuralbank.com', 'Seg-Sex 10:00-16:00', -22.906847, -43.172897, TRUE),
+(6, 'BR-SP-001', 'NeuralBank São Paulo', 'Av. Paulista 1578', 'São Paulo', 'São Paulo', '01310-200', 3, '+55-11-5555-0100', 'saopaulo@neuralbank.com', 'Seg-Sex 10:00-16:00', -23.561414, -46.656350, TRUE),
+(7, 'BR-RJ-001', 'NeuralBank Rio de Janeiro', 'Av. Rio Branco 156', 'Rio de Janeiro', 'Rio de Janeiro', '20040-003', 3, '+55-21-5555-0200', 'rio@neuralbank.com', 'Seg-Sex 10:00-16:00', -22.906847, -43.172897, TRUE),
 -- Argentina
-('AR-BA-001', 'NeuralBank Buenos Aires', 'Av. Corrientes 456', 'Buenos Aires', 'Capital Federal', 'C1043', 4, '+54-11-5555-0100', 'buenosaires@neuralbank.com', 'Lun-Vie 10:00-15:00', -34.603722, -58.381592, TRUE),
+(8, 'AR-BA-001', 'NeuralBank Buenos Aires', 'Av. Corrientes 456', 'Buenos Aires', 'Capital Federal', 'C1043', 4, '+54-11-5555-0100', 'buenosaires@neuralbank.com', 'Lun-Vie 10:00-15:00', -34.603722, -58.381592, TRUE),
 -- Chile
-('CL-ST-001', 'NeuralBank Santiago Centro', 'Av. Libertador Bernardo O''Higgins 1234', 'Santiago', 'Región Metropolitana', '8320000', 5, '+56-2-2555-0100', 'santiago@neuralbank.com', 'Lun-Vie 9:00-18:00', -33.448891, -70.669266, TRUE),
-('CL-VA-001', 'NeuralBank Valparaíso', 'Av. Pedro Montt 2045', 'Valparaíso', 'Región de Valparaíso', '2340000', 5, '+56-32-255-5100', 'valparaiso@neuralbank.com', 'Lun-Vie 9:00-17:00', -33.047238, -71.612688, TRUE),
+(9, 'CL-ST-001', 'NeuralBank Santiago Centro', 'Av. Libertador Bernardo O''Higgins 1234', 'Santiago', 'Región Metropolitana', '8320000', 5, '+56-2-2555-0100', 'santiago@neuralbank.com', 'Lun-Vie 9:00-18:00', -33.448891, -70.669266, TRUE),
+(10, 'CL-VA-001', 'NeuralBank Valparaíso', 'Av. Pedro Montt 2045', 'Valparaíso', 'Región de Valparaíso', '2340000', 5, '+56-32-255-5100', 'valparaiso@neuralbank.com', 'Lun-Vie 9:00-17:00', -33.047238, -71.612688, TRUE),
 -- España
-('ES-MD-001', 'NeuralBank Madrid', 'Gran Vía 28', 'Madrid', 'Comunidad de Madrid', '28013', 8, '+34-91-555-0100', 'madrid@neuralbank.com', 'Lun-Vie 9:00-14:00', 40.420152, -3.705949, TRUE),
-('ES-BC-001', 'NeuralBank Barcelona', 'Passeig de Gràcia 92', 'Barcelona', 'Cataluña', '08008', 8, '+34-93-555-0100', 'barcelona@neuralbank.com', 'Lun-Vie 9:00-14:00', 41.385063, 2.173404, TRUE),
+(11, 'ES-MD-001', 'NeuralBank Madrid', 'Gran Vía 28', 'Madrid', 'Comunidad de Madrid', '28013', 8, '+34-91-555-0100', 'madrid@neuralbank.com', 'Lun-Vie 9:00-14:00', 40.420152, -3.705949, TRUE),
+(12, 'ES-BC-001', 'NeuralBank Barcelona', 'Passeig de Gràcia 92', 'Barcelona', 'Cataluña', '08008', 8, '+34-93-555-0100', 'barcelona@neuralbank.com', 'Lun-Vie 9:00-14:00', 41.385063, 2.173404, TRUE),
 -- Reino Unido
-('GB-LN-001', 'NeuralBank London', '1 Canada Square', 'London', 'England', 'E14 5AB', 9, '+44-20-5555-0100', 'london@neuralbank.com', 'Mon-Fri 9:00-17:00', 51.507351, -0.127758, TRUE);
+(13, 'GB-LN-001', 'NeuralBank London', '1 Canada Square', 'London', 'England', 'E14 5AB', 9, '+44-20-5555-0100', 'london@neuralbank.com', 'Mon-Fri 9:00-17:00', 51.507351, -0.127758, TRUE);
+
+-- Ajustar secuencia de sucursal
+ALTER SEQUENCE core.sucursal_sucursal_id_seq RESTART WITH 14;
 
 -- Insertar Ejecutivos
 INSERT INTO core.ejecutivo (sucursal_id, codigo_empleado, identificacion, tipo_identificacion, nombre_completo, email, telefono, cargo, fecha_contratacion, activo) VALUES
@@ -290,25 +299,25 @@ INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
 (3, 5, 'CRE-US-2021-010', 'Hipotecario', 1, 450000.00, 420000.00, 4.25, 360, '2021-09-15', '2021-10-20', '2021-11-01', 'Vigente', 'Primary residence purchase - Los Angeles', 750.00, 3);
 
--- Crédito PERSONAL - Cliente 5 (Mario Gómez - México)
+-- Crédito PERSONAL - Cliente 5 (Mario Gómez - México) -> CORREGIDO 'PERSONAL' a 'Personal'
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
-(5, 9, 'CRE-MX-2022-015', 'PERSONAL', 6, 250000.00, 250000.00, 18.50, 24, '2022-03-10', '2022-03-15', '2022-03-20', 'Vigente', 'Consolidación de deudas', 720.00, 6);
+(5, 9, 'CRE-MX-2022-015', 'Personal', 6, 250000.00, 250000.00, 18.50, 24, '2022-03-10', '2022-03-15', '2022-03-20', 'Vigente', 'Consolidación de deudas', 720.00, 6);
 
 -- Crédito Automotriz - Cliente 7 (Carlos Sánchez - México)
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
 (7, 13, 'CRE-MX-2022-020', 'Automotriz', 6, 380000.00, 380000.00, 14.25, 48, '2022-01-20', '2022-01-25', '2022-02-01', 'Vigente', 'Vehículo nuevo', 740.00, 7);
 
--- Crédito PERSONAL - Cliente 8 (Paulo Silva - Brasil)
+-- Crédito PERSONAL - Cliente 8 (Paulo Silva - Brasil) -> CORREGIDO 'PERSONAL' a 'Personal'
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
-(8, 15, 'CRE-BR-2022-008', 'PERSONAL', 7, 75000.00, 75000.00, 24.90, 36, '2022-06-15', '2022-06-20', '2022-06-25', 'Vigente', 'Educação e cursos', 710.00, 9);
+(8, 15, 'CRE-BR-2022-008', 'Personal', 7, 75000.00, 75000.00, 24.90, 36, '2022-06-15', '2022-06-20', '2022-06-25', 'Vigente', 'Educação e cursos', 710.00, 9);
 
 -- Crédito Hipotecario - Cliente 13 (Juan Pérez - Chile)
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
 (13, 25, 'CRE-CL-2021-005', 'Hipotecario', 9, 80000000, 75000000, 3.50, 240, '2021-09-15', '2021-10-20', '2021-11-01', 'Vigente', 'Compra vivienda Santiago', 760.00, 13);
 
--- Crédito PERSONAL - Cliente 15 (Antonio García - España)
+-- Crédito PERSONAL - Cliente 15 (Antonio García - España) -> CORREGIDO 'PERSONAL' a 'Personal'
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
-(15, 29, 'CRE-ES-2022-012', 'PERSONAL', 2, 25000.00, 25000.00, 7.50, 48, '2022-05-10', '2022-05-15', '2022-05-20', 'Vigente', 'Reforma vivienda', 770.00, 16);
+(15, 29, 'CRE-ES-2022-012', 'Personal', 2, 25000.00, 25000.00, 7.50, 48, '2022-05-10', '2022-05-15', '2022-05-20', 'Vigente', 'Reforma vivienda', 770.00, 16);
 
 -- Crédito Comercial - TechCorp Solutions (USA)
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
@@ -317,28 +326,6 @@ INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo
 -- Crédito Comercial - Comercializadora Global (México)
 INSERT INTO core.credito (cliente_id, cuenta_desembolso_id, numero_credito, tipo_credito, moneda_id, monto_solicitado, monto_aprobado, tasa_interes_anual, plazo_meses, fecha_solicitud, fecha_aprobacion, fecha_desembolso, estado, destino_credito, score_aprobacion, ejecutivo_id) VALUES
 (21, 41, 'CRE-MX-EMP-2022-003', 'Comercial', 6, 5000000.00, 5000000.00, 16.50, 48, '2022-03-10', '2022-03-25', '2022-04-05', 'Vigente', 'Expansión de operaciones', 810.00, 5);
-
--- Insertar Garantías
--- Garantía para Crédito Hipotecario - David Lee (USA)
-INSERT INTO core.garantia (credito_id, tipo_garantia, descripcion, valor_tasacion, moneda_id, direccion, fecha_tasacion, estado) VALUES
-(3, 'Hipotecaria', '3-bedroom apartment in downtown Los Angeles', 520000.00, 1, '789 Sunset Boulevard, Apt 1502, Los Angeles, CA 90028', '2021-09-20', 'Vigente');
-
--- Garantía para Crédito Automotriz - Jennifer Martinez (USA)
-INSERT INTO core.garantia (credito_id, tipo_garantia, descripcion, valor_tasacion, moneda_id, fecha_tasacion, estado) VALUES
-(2, 'Vehicular', 'Tesla Model 3 2022', 42000.00, 1, '2022-04-08', 'Vigente');
-
--- Garantía para Crédito Automotriz - Carlos Sánchez (México)
-INSERT INTO core.garantia (credito_id, tipo_garantia, descripcion, valor_tasacion, moneda_id, fecha_tasacion, estado) VALUES
-(5, 'Vehicular', 'Nissan Versa 2022', 450000.00, 6, '2022-01-23', 'Vigente');
-
--- Garantía para Crédito Hipotecario - Juan Pérez (Chile)
-INSERT INTO core.garantia (credito_id, tipo_garantia, descripcion, valor_tasacion, moneda_id, direccion, fecha_tasacion, estado) VALUES
-(8, 'Hipotecaria', 'Departamento 3 dormitorios 2 baños', 90000000, 9, 'Los Aromos 234, Depto 502, Santiago', '2021-09-20', 'Vigente');
-
--- Garantía para Crédito Comercial - TechCorp
-INSERT INTO core.garantia (credito_id, tipo_garantia, descripcion, valor_tasacion, moneda_id, direccion, fecha_tasacion, estado) VALUES
-(10, 'Valores', 'Commercial equipment and inventory', 850000.00, 1, '500 Fifth Avenue, New York, NY 10110', '2021-04-15', 'Vigente');
-
 
 -- Insertar Transacciones
 -- Transferencias
