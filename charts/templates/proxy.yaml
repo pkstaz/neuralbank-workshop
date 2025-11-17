@@ -23,7 +23,7 @@ data:
         # ------------------------------------------------------------
         location /api/ {
             # Sin barra al final en proxy_pass para pasar el path completo
-            proxy_pass http://{{ .Release.Name }}-backend-svc:8080;
+            proxy_pass http://neuralbank-backend-svc:8080;
         }
 
         # ------------------------------------------------------------
@@ -31,12 +31,12 @@ data:
         # ------------------------------------------------------------
         # Quarkus necesita ambos paths para que cargue la UI y los recursos
         location /swagger-ui {
-             proxy_pass http://{{ .Release.Name }}-backend-svc:8080/swagger-ui;
+             proxy_pass http://neuralbank-backend-svc:8080/swagger-ui;
         }
         
         # Recursos estáticos de Quarkus (JS, CSS del Swagger)
         location /q/ {
-             proxy_pass http://{{ .Release.Name }}-backend-svc:8080/q/;
+             proxy_pass http://neuralbank-backend-svc:8080/q/;
         }
 
         # ------------------------------------------------------------
@@ -44,7 +44,7 @@ data:
         # ------------------------------------------------------------
         location / {
             # CORRECCIÓN: Apuntamos al puerto 8080 del servicio frontend
-            proxy_pass http://{{ .Release.Name }}-frontend-svc:8080;
+            proxy_pass http://neuralbank-frontend-svc:8080;
         }
     }
 
