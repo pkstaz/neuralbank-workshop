@@ -177,11 +177,13 @@ public class CustomerServiceImpl implements CustomerService {
         
         customer.nivelRiesgo = nivelRiesgo;
         
-        if (customer.metadata == null) {
-            customer.metadata = new HashMap<>();
-        }
-        customer.metadata.put("risk_justification", justificacion);
-        customer.metadata.put("risk_update_date", java.time.LocalDateTime.now().toString());
+        // Create a new HashMap instance to ensure Hibernate detects the change
+        Map<String, Object> newMetadata = customer.metadata != null 
+                ? new HashMap<>(customer.metadata) 
+                : new HashMap<>();
+        newMetadata.put("risk_justification", justificacion);
+        newMetadata.put("risk_update_date", java.time.LocalDateTime.now().toString());
+        customer.metadata = newMetadata;
     }
     
     @Override
@@ -213,11 +215,13 @@ public class CustomerServiceImpl implements CustomerService {
         
         customer.activo = false;
         
-        if (customer.metadata == null) {
-            customer.metadata = new HashMap<>();
-        }
-        customer.metadata.put("deactivation_reason", motivo);
-        customer.metadata.put("deactivation_date", java.time.LocalDateTime.now().toString());
+        // Create a new HashMap instance to ensure Hibernate detects the change
+        Map<String, Object> newMetadata = customer.metadata != null 
+                ? new HashMap<>(customer.metadata) 
+                : new HashMap<>();
+        newMetadata.put("deactivation_reason", motivo);
+        newMetadata.put("deactivation_date", java.time.LocalDateTime.now().toString());
+        customer.metadata = newMetadata;
     }
     
     @Override
@@ -228,13 +232,15 @@ public class CustomerServiceImpl implements CustomerService {
         
         customer.activo = false;
         
-        if (customer.metadata == null) {
-            customer.metadata = new HashMap<>();
-        }
-        customer.metadata.put("blocked", true);
-        customer.metadata.put("block_reason", motivo);
-        customer.metadata.put("block_comments", comentarios);
-        customer.metadata.put("block_date", java.time.LocalDateTime.now().toString());
+        // Create a new HashMap instance to ensure Hibernate detects the change
+        Map<String, Object> newMetadata = customer.metadata != null 
+                ? new HashMap<>(customer.metadata) 
+                : new HashMap<>();
+        newMetadata.put("blocked", true);
+        newMetadata.put("block_reason", motivo);
+        newMetadata.put("block_comments", comentarios);
+        newMetadata.put("block_date", java.time.LocalDateTime.now().toString());
+        customer.metadata = newMetadata;
     }
     
     @Override
@@ -245,11 +251,13 @@ public class CustomerServiceImpl implements CustomerService {
         
         customer.activo = true;
         
-        if (customer.metadata == null) {
-            customer.metadata = new HashMap<>();
-        }
-        customer.metadata.put("blocked", false);
-        customer.metadata.put("unblock_date", java.time.LocalDateTime.now().toString());
+        // Create a new HashMap instance to ensure Hibernate detects the change
+        Map<String, Object> newMetadata = customer.metadata != null 
+                ? new HashMap<>(customer.metadata) 
+                : new HashMap<>();
+        newMetadata.put("blocked", false);
+        newMetadata.put("unblock_date", java.time.LocalDateTime.now().toString());
+        customer.metadata = newMetadata;
     }
     
     @Override
@@ -318,9 +326,11 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findByIdOptional(customerId)
                 .orElseThrow(() -> new CustomerNotFoundException("Cliente con ID " + customerId + " no encontrado"));
         
-        if (customer.metadata == null) {
-            customer.metadata = new HashMap<>();
-        }
-        customer.metadata.put(key, value);
+        // Create a new HashMap instance to ensure Hibernate detects the change
+        Map<String, Object> newMetadata = customer.metadata != null 
+                ? new HashMap<>(customer.metadata) 
+                : new HashMap<>();
+        newMetadata.put(key, value);
+        customer.metadata = newMetadata;
     }
 }

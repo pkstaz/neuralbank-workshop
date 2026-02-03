@@ -1,7 +1,6 @@
 package com.neuralbank.domain.entity;
 
 import com.neuralbank.domain.enums.CustomerType;
-import com.neuralbank.infrastructure.converter.MapToJsonConverter;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
@@ -87,8 +86,8 @@ public class Customer extends PanacheEntityBase {
     @Column(name = "ejecutivo_id")
     public Long ejecutivoId;
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "metadata", columnDefinition = "jsonb")
-    @Convert(converter = MapToJsonConverter.class)
     public Map<String, Object> metadata = new HashMap<>();
 
     @Column(name = "created_at", updatable = false)
